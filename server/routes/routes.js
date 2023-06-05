@@ -1,17 +1,34 @@
 require('dotenv').config()
 
 // routes.js
-const router = require('express').Router()
-const path = require('path')
-const nodemailer = require('nodemailer')
+const express = require('express')
+const router = express.Router()
+const SendVerificationMail = require('../modules/SendVerificationMail')
 
-const transport = {
-    //this is the authentication for sending email.
-host: 'smtp.gmail.com',
-port: 465,
-secure: true, // use TLS
-auth: {
-    user: process.env.SMTP_TO_EMAIL,
-    pass: process.env.SMTP_TO_PASSWORD,
-},
-}
+router.get('/deliverMail/:email', (req, res) => {
+    const email = req.params.email;
+    SendVerificationMail(email)
+    .then(() => {
+      console.log('Mail sent successfully');
+    })
+    .catch((error) => {
+      console.error('Error sending mail:', error);
+    });
+    // Store the email in a variable or perform any other desired actions
+    console.log('Received request to deliver mail to:', email);
+    
+    // Send a response
+    res.send(`Email received: ${email}`);
+});
+
+  /*
+  SendVerificationMail()
+  .then(() => {
+    console.log('Mail sent successfully');
+  })
+  .catch((error) => {
+    console.error('Error sending mail:', error);
+  });
+  */
+
+module.exports = router;
