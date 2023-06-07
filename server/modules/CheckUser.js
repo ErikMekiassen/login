@@ -33,8 +33,8 @@ async function CheckUser(mailAddress) {
 
     // Close the database connection
     await sql.close();
-    console.log("token: ", token)
-    return token;
+    console.log("token comes here: ", `str: ${token} not str: `, token)
+    return `${token}`;
   } catch (error) {
     // Handle any errors that occur during the process
     console.error('An error occurred:', error);

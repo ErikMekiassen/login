@@ -13,21 +13,17 @@ dotenv.config({ path: envPath });
 
 
 
-function deliverMail(req, res) {
-    const email = req.params.email;
-    const token = SendVerificationMail(email)
-    .then(() => {
-      console.log('Mail sent successfullyyyyyyy: ', process.env.DB_USERNAME);
-    })
-    .catch((error) => {
+async function deliverMail(req, res) {
+    try {
+      const email = req.params.email;
+      const token = await SendVerificationMail(email);
+      console.log('Received request to deliver mail to:', email);
+      res.send(`Email received too : ${email}`);
+    } catch (error) {
       console.error('Error sending mail at deliverMail:', error);
-    });
-    // Store the email in a variable or perform any other desired actions
-    console.log('Received request to deliver mail to:', email);
-    
-    // Send a response
-    console.log("token .get: ", token)
-    res.send(`Email received: ${email} and token: ${token}`);
-}
+      res.status(500).json({ message: "Error delivering mail" });
+    }
+  }
+  
 
 module.exports = deliverMail

@@ -8,8 +8,10 @@ const { log } = require("console");
 const envPath = path.resolve(__dirname, '..//.env');
 // set opp dotenv til å finne veien til .env
 dotenv.config({ path: envPath });
+
+
 async function SendVerificationMail(mailAddress) {
-    const token = CheckUser(mailAddress)
+    const token = await CheckUser(mailAddress)
     // SMTP transportør objekt
     const transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -30,7 +32,7 @@ async function SendVerificationMail(mailAddress) {
         text: 'hei.com',
         html: `
             <h1>Welcome to my log in page!</h1>
-            <p><a href=${`localhost:3000/home/${token}`}>Log in</a></p>
+            <p><a href=${`localhost:3000/home/${token}`}>Log in: ${token}</a></p>
             `
         };
 
